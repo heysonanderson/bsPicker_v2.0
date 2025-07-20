@@ -1,0 +1,76 @@
+function createModel(brawlersCount, mapsCount, modesCount) {
+    const b1 = tf.input({ shape: [1] });
+    const b2 = tf.input({ shape: [1] });
+    const b3 = tf.input({ shape: [1] });
+    const map = tf.input({ shape: [1] });
+    const mode = tf.input({ shape: [1] });
+    const wr1 = tf.input({ shape: [1] });
+    const wr2 = tf.input({ shape: [1] });
+    const wr3 = tf.input({ shape: [1] });
+    const pr1 = tf.input({ shape: [1] });
+    const pr2 = tf.input({ shape: [1] });
+    const pr3 = tf.input({ shape: [1] });
+    const cwr1 = tf.input({ shape: [1] });
+    const cwr2 = tf.input({ shape: [1] });
+    const cwr3 = tf.input({ shape: [1] });
+
+
+    const brawlerEmbedding = tf.layers.embedding({
+        inputDim: brawlersCount,
+        outputDim: 16,
+        name: 'brawlerEmbedding'
+    });
+
+    const mapEmbedding = tf.layers.embedding({
+        inputDim: mapsCount,
+        outputDim: 8,
+        name: 'mapEmbedding'
+    }).apply(map);
+
+    const modeEmbedding = tf.layers.embedding({
+        inputDim: modesCount,
+        outputDim: 8,
+        name: 'modeEmbedding'
+    }).apply(mode);
+
+
+    const mapCtx = concat(mapEmbedding, modeEmbedding);
+
+    const brawlerProcess = (b, wr, pr) => {
+        const bEmb = tf.layers.dropout({ rate: 0.3 }).apply(flatt(brawlerEmbedding.apply(b)));
+        const mapImpact = tf.layers.dense({ units: 16, activation: 'relu' }).apply(mapCtx);
+        const wrAdjusted = tf.layers.multiply().apply([wr, tf.layers.dense({ units: 1, activation: 'sigmoid' }).apply(mapImpact)]);
+        return tf.layers.concatenate().apply([bEmb, flatt(wrAdjusted), pr]);
+    }
+
+
+    const b1P = brawlerProcess(b1, wr1, pr1);
+    const b2P = brawlerProcess(b2, wr2, pr2);
+    const b3P = brawlerProcess(b3, wr3, pr3);
+
+
+    const team = concat(
+        b1P,
+        b2P,
+        b3P,
+        flatt(dense(mapCtx, 64, 'relu'))
+    )
+
+
+    const mapScaling = dense(mapCtx, 1, 'sigmoid');
+    const teamScaled = mul(team, mapScaling);
+
+
+    let x = tf.layers.dense({ units: 256, activation: 'swish' }).apply(teamScaled);
+    x = tf.layers.dense({ units: 128, activation: 'swish' }).apply(dropout(x));
+
+    const output = tf.layers.dense({
+        units: 1,
+        activation: 'sigmoid'
+    }).apply(flatt(dropout(x)));
+
+    return tf.model({
+        inputs: [b1, b2, b3, map, mode, wr1, wr2, wr3, pr1, pr2, pr3, cwr1, cwr2, cwr3],
+        outputs: output
+    });
+}

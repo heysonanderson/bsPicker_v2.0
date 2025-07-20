@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>BSPicker</title>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.2/papaparse.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    
+</head>
+<body>
+
+  <button id="trainBtn">train</button>
+  <button id="predictBtn">predict</button>
+  <div>Карта</div>
+  <input type="text" id="map">
+  <div>Режим</div>
+  <input type="text" id="mode">
+  <div>Команда</div>
+  <input type="text" id="tm1">
+  <input type="text" id="tm2">
+  <input type="text" id="tm3">
+  
+  <script type="module">
+    import { main } from '/js/v_04_x/train.js';
+    import { predictOptions } from '/js/v_04_x/MainPredictor.js';
+
+    document.getElementById('trainBtn').addEventListener('click', main);
+    document.getElementById('predictBtn').addEventListener('click', function() {
+      const map = document.getElementById('map').value;
+      const mode = document.getElementById('mode').value;
+      const tm1 = document.getElementById('tm1').value;
+      const tm2 = document.getElementById('tm2').value;
+      const tm3 = document.getElementById('tm3').value;
+      console.log(map,mode)
+      predictOptions.predict(map, mode, tm1, tm2, tm3);
+    });
+  </script>
+
+
+  <script type="module" src="/js/v_04_x/train.js"></script>
+  <script type="module" src="/js/v_04_x/MainPredictor.js"></script>
+    
+</body>
+</html>

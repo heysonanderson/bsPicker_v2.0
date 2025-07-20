@@ -1,0 +1,81 @@
+function createModel(mapsCount, modesCount) {
+    const map = tf.input({ shape: [1] });
+    const mode = tf.input({ shape: [1] });
+    const wr1 = tf.input({ shape: [1] });
+    const wr2 = tf.input({ shape: [1] });
+    const wr3 = tf.input({ shape: [1] });
+    const pr1 = tf.input({ shape: [1] });
+    const pr2 = tf.input({ shape: [1] });
+    const pr3 = tf.input({ shape: [1] });
+    //  const cls1 = tf.input({ shape: [1] });
+    //  const cls2 = tf.input({ shape: [1] });
+    //  const cls3 = tf.input({ shape: [1] });
+
+    const speed1 = tf.input({ shape: [1] });
+    const speed2 = tf.input({ shape: [1] });
+    const speed3 = tf.input({ shape: [1] });
+    const hp1 = tf.input({ shape: [1] });
+    const hp2 = tf.input({ shape: [1] });
+    const hp3 = tf.input({ shape: [1] });
+    const atkR1 = tf.input({ shape: [1] });
+    const atkR2 = tf.input({ shape: [1] });
+    const atkR3 = tf.input({ shape: [1] });
+    const classCounts = tf.input({ shape: [7] });
+
+
+    const prepareF = (...f) => {
+        return f.map(one => tf.layers.batchNormalization().apply(one))
+    }
+
+    const [
+        speed1N,
+        speed2N,
+        speed3N,
+        hp1N,
+        hp2N,
+        hp3N,
+        atkR1N,
+        atkR2N,
+        atkR3N,
+        classCountsN
+    ] = prepareF(
+        speed1,
+        speed2,
+        speed3,
+        hp1,
+        hp2,
+        hp3,
+        atkR1,
+        atkR2,
+        atkR3,
+        classCounts
+    )
+
+    const mapEmbedding = tf.layers.embedding({
+        inputDim: mapsCount,
+        outputDim: 12,
+        name: 'mapEmbedding'
+    }).apply(map);
+
+    const modeEmbedding = tf.layers.embedding({
+        inputDim: modesCount,
+        outputDim: 8,
+        name: 'modeEmbedding'
+    }).apply(mode);
+
+
+    const mapCtx = flatt(dense(concat(mapEmbedding,modeEmbedding), 16, 'relu'));
+    let x = concat(mapCtx, wr1, wr2, wr3, pr1, pr2, pr3, classCountsN, speed1N, speed2N, speed3N, hp1N, hp2N, hp3N, atkR1N, atkR2N, atkR3N);
+
+    x = dense(x, 64, 'relu');
+
+    const output = tf.layers.dense({
+        units: 1,
+        activation: 'sigmoid'
+    }).apply(x);
+
+    return tf.model({
+        inputs: [map, mode, wr1, wr2, wr3, pr1, pr2, pr3, speed1, speed2, speed3, hp1, hp2, hp3, atkR1, atkR2, atkR3, classCounts],
+        outputs: output
+    });
+}

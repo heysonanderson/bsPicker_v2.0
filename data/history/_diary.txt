@@ -1,0 +1,249 @@
+модель из 1st.txt
+с использованием cwr
+
+Эпоха 21: loss = 0.0027 | mae = 0.0408 | r2 = 0.4843 | val_loss = 0.0025 | val_mae = 0.0396 | val_r2 = 0.5005
+Эпоха 22: loss = 0.0025 | mae = 0.0395 | r2 = 0.5157 | val_loss = 0.0021 | val_mae = 0.0363 | val_r2 = 0.5814
+Эпоха 23: loss = 0.0022 | mae = 0.0374 | r2 = 0.5637 | val_loss = 0.0021 | val_mae = 0.0359 | val_r2 = 0.5889
+Эпоха 24: loss = 0.0023 | mae = 0.0373 | r2 = 0.5635 | val_loss = 0.0023 | val_mae = 0.0379 | val_r2 = 0.5423
+Эпоха 25: loss = 0.0022 | mae = 0.0371 | r2 = 0.5711 | val_loss = 0.0023 | val_mae = 0.0376 | val_r2 = 0.5435
+Эпоха 26: loss = 0.0022 | mae = 0.0369 | r2 = 0.5749 | val_loss = 0.0021 | val_mae = 0.0357 | val_r2 = 0.5893
+Эпоха 27: loss = 0.0021 | mae = 0.0364 | r2 = 0.5820 | val_loss = 0.0022 | val_mae = 0.0368 | val_r2 = 0.5699
+
+Топ-10 команд на карте triple_dribble
+1. [JACKY, MR. P, OLLIE]: 0.7326
+2. [HANK, JACKY, OLLIE]: 0.7299
+3. [BIBI, JACKY, OLLIE]: 0.7291
+4. [JACKY, JUJU, OLLIE]: 0.7274
+5. [FRANK, JACKY, OLLIE]: 0.7239
+6. [JACKY, KENJI, OLLIE]: 0.7142
+7. [JUJU, MR. P, OLLIE]: 0.7129
+8. [HANK, MR. P, OLLIE]: 0.7113
+9. [EL PRIMO, JACKY, OLLIE]: 0.7111
+10. [GROM, JACKY, OLLIE]: 0.7110
+
+
+та же архитектура, те же условия обучения, но без cwr - оставил инпуты но убрал тензор из всех слоёв(временное, ленивое решение)
+
+Эпоха 36: loss = 0.0021 | mae = 0.0361 | r2 = 0.5934 | val_loss = 0.0018 | val_mae = 0.0335 | val_r2 = 0.6292
+Эпоха 37: loss = 0.0021 | mae = 0.0361 | r2 = 0.5905 | val_loss = 0.0028 | val_mae = 0.0426 | val_r2 = 0.4422
+Эпоха 38: loss = 0.0021 | mae = 0.0362 | r2 = 0.5904 | val_loss = 0.0018 | val_mae = 0.0329 | val_r2 = 0.6427
+Эпоха 39: loss = 0.0021 | mae = 0.0360 | r2 = 0.5947 | val_loss = 0.0023 | val_mae = 0.0384 | val_r2 = 0.5320
+Эпоха 40: loss = 0.0021 | mae = 0.0357 | r2 = 0.5994 | val_loss = 0.0018 | val_mae = 0.0328 | val_r2 = 0.6452
+Эпоха 41: loss = 0.0021 | mae = 0.0358 | r2 = 0.6023 | val_loss = 0.0019 | val_mae = 0.0338 | val_r2 = 0.6269
+Эпоха 42: loss = 0.0021 | mae = 0.0360 | r2 = 0.5950 | val_loss = 0.0026 | val_mae = 0.0409 | val_r2 = 0.4775
+Эпоха 43: loss = 0.0021 | mae = 0.0363 | r2 = 0.5873 | val_loss = 0.0018 | val_mae = 0.0329 | val_r2 = 0.6435
+Эпоха 44: loss = 0.0020 | mae = 0.0352 | r2 = 0.6095 | val_loss = 0.0019 | val_mae = 0.0345 | val_r2 = 0.6123
+
+Топ-10 команд на карте triple_dribble
+1. [BIBI, JACKY, OLLIE]: 0.7390
+2. [JACKY, JUJU, OLLIE]: 0.7365
+3. [FRANK, JACKY, OLLIE]: 0.7350
+4. [HANK, JACKY, OLLIE]: 0.7341
+5. [JACKY, MR. P, OLLIE]: 0.7288
+6. [EL PRIMO, JACKY, OLLIE]: 0.7217
+7. [JACKY, NITA, OLLIE]: 0.7156
+8. [JACKY, LOU, OLLIE]: 0.7152
+9. [JACKY, MAISIE, OLLIE]: 0.7150
+10. [JACKY, KENJI, OLLIE]: 0.7146
+
+
+реальные данные из датасета:
+
+
+JACKY	NITA	TARA	0.75
+LARRY & LAWRIE	OLLIE	STU	0.744736842
+BIBI	FRANK	NITA	0.741444867
+BIBI	LOU	NITA	0.73880597
+JACKY	JUJU	MAISIE	0.736686391
+DYNAMIKE	EL PRIMO	LOU	0.732258065
+BARLEY	BIBI	JACKY	0.729083665
+JUJU	LOU	NITA	0.727678571
+JACKY	SANDY	SURGE	0.723163842
+DYNAMIKE	JACKY	STU	0.722319859
+FRANK	JUJU	MAISIE	0.721621622
+BARLEY	JACKY	MAISIE	0.717791411
+BIBI	FRANK	STU	0.7175
+JACKY	JUJU	TARA	0.717105263
+BARLEY	JACKY	SANDY	0.716666667
+FRANK	LOU	MAISIE	0.71656051
+
+по моим наблюдениям нейросеть отдает слишком большое предпочтение персонажам с общим высоким винрейтом, теряя контекст карты
+
+
+......................................................................................................................
+
+
+попытка оптимизации контекста 2.txt 
+
+brawlerPreprocess: wr * mapCtx
+
+
+triple_dribble:
+
+1. [BIBI, JACKY, OLLIE]: 0.7552
+2. [JACKY, JUJU, OLLIE]: 0.7540
+3. [JACKY, MR. P, OLLIE]: 0.7510
+4. [HANK, JACKY, OLLIE]: 0.7499
+5. [FRANK, JACKY, OLLIE]: 0.7492
+6. [EL PRIMO, JACKY, OLLIE]: 0.7407
+7. [JACKY, NITA, OLLIE]: 0.7360
+8. [JACKY, MAISIE, OLLIE]: 0.7348
+9. [JACKY, KENJI, OLLIE]: 0.7345
+10. [JACKY, LOU, OLLIE]: 0.7322
+
+
+
+......................................................................................................................
+
+
+BSP-02.00.txt
+
+Успешная попытка оптимизации классов в пиках, с добавлением classCounts(7)
+
+
+triple_dribble:
+
+1. [LOU, MR. P, OLLIE]: 0.7403
+2. [BEA, JACKY, OLLIE]: 0.7293
+3. [MAISIE, MR. P, OLLIE]: 0.7289
+4. [MR. P, OLLIE, SANDY]: 0.7241
+5. [JACKY, JUJU, OLLIE]: 0.7224
+6. [LOU, MAISIE, OLLIE]: 0.7214
+7. [LOU, OLLIE, SANDY]: 0.7167
+8. [MR. P, OLLIE, R-T]: 0.7143
+9. [JACKY, MR. P, OLLIE]: 0.7102
+10. [BEA, MR. P, OLLIE]: 0.7095
+
+
+
+
+BSP-02.01.txt picks >= 100, r2score: 0.58, размер выборки: 39000
+
+
+Топ-10 команд на карте triple_dribble
+1. [CARL, JACKY, OLLIE]: 0.7301
+2. [BEA, JACKY, OLLIE]: 0.7194
+3. [JACKY, LOU, OLLIE]: 0.7149
+4. [JACKY, JUJU, OLLIE]: 0.7138
+5. [MAISIE, OLLIE, SANDY]: 0.7113
+6. [JACKY, MR. P, OLLIE]: 0.7096
+7. [CARL, JACKY, JUJU]: 0.7085
+8. [HANK, JUJU, OLLIE]: 0.7034
+9. [JACKY, JUJU, MR. P]: 0.7033
+10. [CARL, EL PRIMO, OLLIE]: 0.7031
+
+
+Топ-10 команд на карте out_in_the_open
+1. [BROCK, MR. P, OLLIE]: 0.7605
+2. [ANGELO, MR. P, OLLIE]: 0.7573
+3. [ANGELO, BROCK, OLLIE]: 0.7465
+4. [MR. P, OLLIE, PEARL]: 0.7441
+5. [MR. P, OLLIE, SHELLY]: 0.7382
+6. [MR. P, OLLIE, R-T]: 0.7373
+7. [BROCK, OLLIE, PEARL]: 0.7369
+8. [EVE, MR. P, OLLIE]: 0.7312
+9. [BROCK, OLLIE, R-T]: 0.7311
+10. [ANGELO, ASH, OLLIE]: 0.7283
+
+
+
+
+BSP-02.02.txt picks >= 200, val_r2: 0.62, размер выборки: 14709
+
+
+Топ-50 команд на карте triple_dribble
+1. [CARL, JACKY, OLLIE]: 0.7372
+2. [JACKY, OLLIE, SANDY]: 0.7321
+3. [HANK, JACKY, OLLIE]: 0.7303
+4. [MAISIE, OLLIE, SANDY]: 0.7288
+5. [BIBI, OLLIE, SANDY]: 0.7247
+6. [JACKY, OLLIE, SHELLY]: 0.7244
+7. [MAISIE, OLLIE, R-T]: 0.7216
+8. [MR. P, OLLIE, SANDY]: 0.7215
+9. [CARL, EL PRIMO, OLLIE]: 0.7211
+10. [JACKY, OLLIE, R-T]: 0.7174
+
+Топ-50 команд на карте out_in_the_open
+1. [ANGELO, HANK, OLLIE]: 0.7337
+2. [BROCK, BUSTER, OLLIE]: 0.7306
+3. [ANGELO, OLLIE, R-T]: 0.7247
+4. [BROCK, HANK, OLLIE]: 0.7238
+5. [BROCK, OLLIE, PEARL]: 0.7216
+6. [ANGELO, DRACO, OLLIE]: 0.7201
+7. [MR. P, OLLIE, PEARL]: 0.7185
+8. [ANGELO, BROCK, OLLIE]: 0.7171
+9. [BROCK, OLLIE, R-T]: 0.7163
+10. [BROCK, KIT, OLLIE]: 0.7158
+
+
+
+
+BSP-02.01C.txt picks >= 120, r2score: 0.58, размер выборки: 31000
+
+убрал wr,pr нормализованы classCounts
+
+улучшений нет
+
+
+.......................................................
+
+
+BSP-02.03.txt
+
+Результирующий Dense(32) => 64
+
+Начал предлагать интересные пики, которые именно хочется проверить в деле, либо проверить датасет на выбросы
+
+Топ-50 команд на карте super_center
+1. [CHUCK, R-T, TARA]: 0.7475
+2. [CHUCK, R-T, SANDY]: 0.7451
+3. [CHUCK, MR. P, R-T]: 0.7341
+4. [BIBI, CHUCK, MR. P]: 0.7309
+5. [CHUCK, MR. P, TARA]: 0.7283
+6. [CHUCK, MR. P, SANDY]: 0.7248
+7. [CHUCK, R-T, STU]: 0.7232
+8. [BIBI, CHUCK, TARA]: 0.7232
+9. [CHUCK, MR. P, OLLIE]: 0.7231
+10. [CHUCK, FANG, MR. P]: 0.7217
+
+
+Топ-50 команд на карте out_in_the_open
+1. [BROCK, MR. P, OLLIE]: 0.7358
+2. [MR. P, OLLIE, R-T]: 0.7262
+3. [ANGELO, BONNIE, LARRY & LAWRIE]: 0.7261
+4. [MR. P, OLLIE, PEARL]: 0.7251
+5. [8-BIT, BONNIE, OLLIE]: 0.7248
+6. [BONNIE, MR. P, OLLIE]: 0.7239
+7. [ANGELO, BONNIE, GROM]: 0.7230
+8. [ANGELO, MR. P, OLLIE]: 0.7220
+9. [ANGELO, BROCK, MR. P]: 0.7216
+10. [ANGELO, MR. P, R-T]: 0.7203
+
+
+
+BSP-02.04
+
+плюс 1 денс 32нейрона слой, улучшений нет
+
+
+
+.....................................................
+
+BSP-04.00 
+
+добавлены матрицы карт, теперь скормить модели можно что угодно, ограничение только режим, не задокументировал эту модель, начну с 04.02, с увеличенным количеством сверток
+
+BSP-04.02.txt picks >= 120
+
+ничего особенного, пока что
+
+BSP-04.03 picks >= 120
+
+По моим наблюдениям при изменении режима на одной и той же карте ничего не изменяется по пикам, убираю как шумный признак,
+в последующих моделях не будет этого признака, также уменьшаю количество входов, запихиваю в массивы логически совместные признаки
+
+
+
+......................................................................
+
+

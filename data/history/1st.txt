@@ -1,0 +1,92 @@
+function createModel(brawlersCount, mapsCount, modesCount) {
+    const b1 = tf.input({ shape: [1] });
+    const b2 = tf.input({ shape: [1] });
+    const b3 = tf.input({ shape: [1] });
+    const map = tf.input({ shape: [1] });
+    const mode = tf.input({ shape: [1] });
+    const wr1 = tf.input({ shape: [1] });
+    const wr2 = tf.input({ shape: [1] });
+    const wr3 = tf.input({ shape: [1] });
+    const pr1 = tf.input({ shape: [1] });
+    const pr2 = tf.input({ shape: [1] });
+    const pr3 = tf.input({ shape: [1] });
+    const cwr1 = tf.input({ shape: [1] });
+    const cwr2 = tf.input({ shape: [1] });
+    const cwr3 = tf.input({ shape: [1] });
+
+
+    const brawlerEmbedding = tf.layers.embedding({
+        inputDim: brawlersCount,
+        outputDim: 32,
+        name: 'brawlerEmbedding'
+    });
+
+    const mapEmbedding = tf.layers.embedding({
+        inputDim: mapsCount,
+        outputDim: 16,
+        name: 'mapEmbedding'
+    }).apply(map);
+
+    const modeEmbedding = tf.layers.embedding({
+        inputDim: modesCount,
+        outputDim: 8,
+        name: 'modeEmbedding'
+    }).apply(mode);
+
+
+    const mapCtx = concat(mapEmbedding, modeEmbedding);
+
+    const brawlerProcess = (b, wr, pr, cwr) => {
+        const bEmb = brawlerEmbedding.apply(b);
+
+        const mapWeights = dense(mapCtx, 32, 'relu');
+        const bWeighted = mul(flatt(bEmb), mapWeights);
+
+        const wrP = dense(wr, 8, 'sigmoid')
+        const prP = dense(pr, 8, 'sigmoid')
+        const cwrP = dense(cwr, 16, 'relu')
+
+        const attention = concat(wrP, prP, cwrP);
+        const wrWeights = dense(attention, 1, 'sigmoid')
+
+        return concat(
+            mul(flatt(bWeighted), wrWeights),
+            wrP, prP, cwrP
+        )
+
+        const vEmb = flatt(brawlerEmbedding.apply(b));
+        const x = concat(vEmb, wr, pr, cwr);
+        return dense(x, 64, 'relu');
+    }
+
+
+    const b1P = brawlerProcess(b1, wr1, pr1, cwr1);
+    const b2P = brawlerProcess(b2, wr2, pr2, cwr2);
+    const b3P = brawlerProcess(b3, wr3, pr3, cwr3);
+
+
+    const team = concat(
+        b1P,
+        b2P,
+        b3P,
+        flatt(dense(mapCtx, 64, 'relu'))
+    )
+
+
+    const mapScaling = dense(mapCtx, 1, 'sigmoid');
+    const teamScaled = mul(team, mapScaling);
+
+
+    let x = tf.layers.dense({ units: 256, activation: 'swish' }).apply(teamScaled);
+    x = tf.layers.dense({ units: 128, activation: 'swish' }).apply(dropout(x));
+
+    const output = tf.layers.dense({
+        units: 1,
+        activation: 'sigmoid'
+    }).apply(flatt(dropout(x)));
+
+    return tf.model({
+        inputs: [b1, b2, b3, map, mode, wr1, wr2, wr3, pr1, pr2, pr3, cwr1, cwr2, cwr3],
+        outputs: output
+    });
+}
