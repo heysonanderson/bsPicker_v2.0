@@ -44,7 +44,7 @@ const modePool = {
     'gemgrab': 5
 };
 
-const model = await tf.loadLayersModel('http://127.0.0.1:5500/data/model/BSP-04.02.json');
+const model = await tf.loadLayersModel('/data/model/BSP-04.01.json');
 
 const brawlerData = await getData(path, Brawlers);
 const brawlerNames = brawlerData.map(b => b.name);
@@ -64,7 +64,7 @@ console.log(brawlerNames)
 const bid = brawlerToId
 
 console.log(brawlerData)
-export const predictOptions = {
+export const MainPredictor = {
     predict: function (map, mode, ...team) {
         if (!team || !team[0]) {
             predictor.predictMultiple(model,

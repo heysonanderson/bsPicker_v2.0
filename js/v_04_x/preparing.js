@@ -86,7 +86,7 @@ export function brawlerIdToWR(teamIds, map, idToBrawlerData) {
         }
 
         // Проверяем корректность ключа карты
-        const mapKey = map.toLowerCase().replace(/ /g, '_'); // Нормализация ключа
+        const mapKey = map.toLowerCase().replace(/ /g, '_');
         const prKey = `${mapKey}_pr`;
         const wrKey = `${mapKey}_wr`;
 

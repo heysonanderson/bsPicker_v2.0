@@ -25,7 +25,7 @@
   
   <script type="module">
     import { main } from '/js/v_04_x/train.js';
-    import { predictOptions } from '/js/v_04_x/MainPredictor.js';
+    import { MainPredictor } from '/js/v_04_x/MainPredictor.js';
 
     document.getElementById('trainBtn').addEventListener('click', main);
     document.getElementById('predictBtn').addEventListener('click', function() {
@@ -35,7 +35,7 @@
       const tm2 = document.getElementById('tm2').value;
       const tm3 = document.getElementById('tm3').value;
       console.log(map,mode)
-      predictOptions.predict(map, mode, tm1, tm2, tm3);
+      MainPredictor.predict(map, mode, tm1, tm2, tm3);
     });
   </script>
 

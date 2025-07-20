@@ -167,28 +167,24 @@ export class Predictor {
 
 export class FilteredPredictor extends Predictor {
     async predictWithFilter(model, selectedBrawlerIds, mapName, modeName, firstOf = 10) {
-        // 1. Фильтруем комбинации, содержащие выбранного бравлера
         for (const selectedBrawlerId of selectedBrawlerIds) {
             this.combinations = this.combinations.filter(team =>
                 team.includes(selectedBrawlerId)
             );
         };
 
-        // 2. Подготавливаем данные только для этих комбинаций
         const preparedData = this.prepareTeamData(
             this.combinations,
             mapName,
             modeName
         );
 
-        // 3. Получаем предсказания
         const inputs = this.getTensors(preparedData, this.nuKeys).inputs;
         const predictions = await model.predict(inputs).data();
 
         this.proPredict(preparedData, predictions, mapName, firstOf);
     }
 
-    // Альтернативная версия с исключением нежелательных бравлеров
     async predictWithExclusions(model, excludeIds, mapName, modeName, firstOf = 10) {
         this.combinations = this.combinations.filter(team =>
             !team.some(id => excludeIds.includes(id))
@@ -199,8 +195,7 @@ export class FilteredPredictor extends Predictor {
             mapName,
             modeName
         );
-
-        // 3. Получаем предсказания
+        
         const inputs = this.getTensors(preparedData, this.nuKeys).inputs;
         const predictions = await model.predict(inputs).data();
 
