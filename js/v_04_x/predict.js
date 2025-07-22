@@ -8,7 +8,8 @@ function getMapMatrix(mapName) {
 export class Predictor {
     constructor({ maxID, idToBrawlerData, getTensors, brawlerIdToWR, mapPool, modePool, nuKeys }) {
         this.cache = new Map();
-        this.combinations = this.generateAllCombinations(maxID)
+        this.combinations = this.generateAllCombinations(maxID);
+        this.allCombinations = this.combinations;
         this.idToBrawlerData = idToBrawlerData;
         this.getTensors = getTensors;
         this.brawlerIdToWR = brawlerIdToWR;
@@ -29,6 +30,10 @@ export class Predictor {
         }
 
         return combinations;
+    };
+
+    reset() {
+        this.combinations = this.allCombinations;
     };
 
     prepareTeamData(teams, mapName, modeName) {
@@ -94,7 +99,7 @@ export class Predictor {
     predictMultiple(model, maps, first) {
         if (!model) throw new Error("Model not provided");
         return Promise.all(
-            maps.map(([map, mode]) => this.predictForMap(model, map, mode, first))
+            maps.map(([map, mode]) => this.cachedPredict(model, map, mode, first))
         );
     };
 
@@ -103,8 +108,13 @@ export class Predictor {
         if (!this.cache.has(key)) {
             const result = await this.predictForMap(model, mapName, modeName, first);
             this.cache.set(key, result);
+        } else {
+            const results = this.cache.get(key);
+            console.log(`Топ-${first} команд на карте ${mapName}`);
+            results.slice(0, first).forEach((team, i) => {
+                console.log(`${i + 1}. [${team.names.join(', ')}]: ${team.predictedWR.toFixed(4)}`);
+            });
         }
-        return this.cache.get(key);
     };
 
     async predictForMap(model, mapName, modeName, firstOf = 10) {
@@ -134,7 +144,7 @@ export class Predictor {
             const team = results[i];
             team.names.forEach(name => {
                 if (!recommends[name]) {
-                    recommends[name] = 0; // Инициализируем нулем, если персонаж встречается первый раз
+                    recommends[name] = 0;
                 }
                 recommends[name] += team.predictedWR;
             });
@@ -146,10 +156,10 @@ export class Predictor {
             .sort((a, b) => b.wr - a.wr);
 
         // Вывод рекомендаций
-        console.log(`Рекомендуемые персонажи на карте ${mapName}(по сумме винрейтов):`);
-        sortedRecommendations.forEach((item, index) => {
-            console.log(`${index + 1}. ${item.name}: ${item.wr.toFixed(2)}%`);
-        });
+        // console.log(`Рекомендуемые персонажи на карте ${mapName}(по сумме винрейтов):`);
+        // sortedRecommendations.forEach((item, index) => {
+        //     console.log(`${index + 1}. ${item.name}: ${item.wr.toFixed(2)}%`);
+        // });
 
 
         console.log(`Топ-${firstOf} команд на карте ${mapName}`);
@@ -195,7 +205,7 @@ export class FilteredPredictor extends Predictor {
             mapName,
             modeName
         );
-        
+
         const inputs = this.getTensors(preparedData, this.nuKeys).inputs;
         const predictions = await model.predict(inputs).data();
 
