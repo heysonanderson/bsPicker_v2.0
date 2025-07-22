@@ -67,7 +67,7 @@ console.log(brawlerData)
 export const MainPredictor = {
     predict: function (map, mode, ...team) {
         predictor.reset();
-        if (!team || !team.some(a => !a)) {
+        if (!team || team.every(el => !el)) {
             predictor.predictMultiple(model,
                 [
                     [map, mode],
